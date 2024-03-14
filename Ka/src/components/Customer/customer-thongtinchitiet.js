@@ -277,14 +277,14 @@ export default function Customerthongtinchitiet() {
                                             </>
                                         )}
                                         {/* Nếu dữ liệu bị null hoặc không có giờ đặt lịch, cứng 4 giờ đặt lịch mặc định */}
-                                        {!reservationDataForSelectedDate && (
+                                        {/* {!reservationDataForSelectedDate && (
                                             <>
                                                 <option>8:00 - 10:00</option>
                                                 <option>11:00 - 13:00</option>
                                                 <option>14:00 - 16:00</option>
                                                 <option>17:00 - 19:00</option>
                                             </>
-                                        )}
+                                        )} */}
                                     </select>
                                     <button className="booking-btn" onClick={handleBooking}>Gửi dữ liệu đặt lịch</button>
                                 </div>

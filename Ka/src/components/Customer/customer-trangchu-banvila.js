@@ -13,7 +13,9 @@ export default function Customertrangchubanvila() {
     const fetchData = async () => {
       try {
         const response = await CallApi.getAllRealEstate();
-        setRealEstates(response);
+        const RealEstate = response.filter(statusRealEstate => statusRealEstate.status ===2)
+        setRealEstates(RealEstate);
+        console.log("x", RealEstate)
         const locationResponse = await CallApi.getAllLocation();
         setLocations(locationResponse);
       } catch (error) {
@@ -55,7 +57,7 @@ export default function Customertrangchubanvila() {
     switch (realEstate.status) {
       case 2:
       case 6:
-        status = 'Sắp Mở Bán';
+        status = 'Đang Mở Bán';
         break;
       default:
         status = ''; // Or any default status you want to show

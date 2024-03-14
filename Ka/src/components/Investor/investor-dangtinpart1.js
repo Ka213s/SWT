@@ -34,6 +34,7 @@ export default function Agencydangtinpart1({ sendData }) {
         discount: '',
         area: '',
         price: '',
+        status: 1,
         // city: '', // Thêm provinceName vào propertyInfo
         // district: '', // Thêm districtName vào propertyInfo
         // ward: '', // Thêm wardName vào propertyInfo

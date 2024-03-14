@@ -93,32 +93,32 @@ export default function ReservationDetailPage() {
         : matchingBookings;
 
     return (
-        <div>
+       <div class="booking-container">
             <ToastContainer position="top-right" autoClose={1000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-            <h2>Chi tiết Đơn Đặt Chỗ cho Khoảng Thời Gian: {timeSlot}</h2>
+            <h2 class="booking-title">Chi tiết Đơn Đặt Chỗ cho Khoảng Thời Gian: {timeSlot}</h2>
             <p>Ngày: {date}</p>
             <select onChange={handleRealEstateIdChange} value={selectedRealEstateId}>
-                <option value="">Chọn mã Bất động sản</option>
+                <option value="">Lọc tên bất động sản</option>
                 {uniqueRealEstateIds.map((realEstateId, index) => (
                     <option key={index} value={realEstateId}>{getRealEstateNameById(realEstateId)}</option>
                 ))}
             </select>
             <select onChange={handleAgencyIdChange} value={selectedAgencyId}>
-                <option value="">Chọn mã Đại lý</option>
+                <option value="">Chọn nhân viên</option>
 
                 {filerAllAgency.map((agency, index) => (
                     <option key={index} value={agency.id}>{getUsernameByCusAgenId(agency.id)}</option>
                 ))}
                 <option value="cancel">Hủy</option> {/* Tùy chọn hủy */}
             </select>
-            <button onClick={handleAdjustment}>Điều chỉnh đặt chỗ cho đại lý</button>
+            <button onClick={handleAdjustment} className='buttontitle'>Điều chỉnh đặt chỗ cho đại lý</button>
             <table>
                 <thead>
                     <tr>
-                        <th>Mã Khách hàng</th>
-                        <th>Mã Bất động sản</th>
-                        <th>Mã Đại lý</th>
-                        <th>Trạng thái</th>
+                        <th>Tên Khách hàng</th>
+                        <th>Tên Bất động sản</th>
+                        <th>Tên Nhân Viên</th>
+                        <th>Trạng thái đơn đặt</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -126,8 +126,9 @@ export default function ReservationDetailPage() {
                         <tr key={index}>
                             <td>{getUsernameByCusAgenId(booking.customerId)}</td>
                             <td>{getRealEstateNameById(booking.realEstateId)}</td>
-                            <td>{booking.agencyId}</td>
-                            <td>{booking.status}</td>
+                            <td>{getUsernameByCusAgenId(booking.agencyId)}</td>
+                            <td>{booking.status === 1 ? 'Đang xử lí' : booking.status}</td>
+
                         </tr>
                     ))}
                 </tbody>
