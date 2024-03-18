@@ -76,7 +76,7 @@ export default function CustomerNaptienkhachhang() {
                 const lastPayment = callDataAllPayment.data[callDataAllPayment.data.length - 1];
                 const lastPaymentAmount = parseFloat(lastPayment.Price);
     
-                if (lastPaymentAmount === numericAmount && lastPayment.Content.includes(description)) {
+                if (lastPaymentAmount === numericAmount) {
                     setPaymentSuccess(true); // Cập nhật biến trạng thái
     
                     // Kiểm tra nếu userLoginBasicInformationDto.accountId có trong dữ liệu callDataAllWallet.investorId
@@ -91,7 +91,7 @@ export default function CustomerNaptienkhachhang() {
                             accountBalance: updatedAmount
                         };
                         try {
-                            await axios.put('http://firstrealestate-001-site1.anytempurl.com/api/Wallet/UpdateWallet/'+getIdWallet, dataToSend);
+                            await axios.put('http://swprealestatev2-001-site1.etempurl.com/api/Wallet/UpdateWallet/'+getIdWallet, dataToSend);
                             console.log("Wallet updated successfully!");
                             
                             // Gửi dữ liệu đến API WalletHistory
@@ -99,7 +99,7 @@ export default function CustomerNaptienkhachhang() {
                                 walletId: getIdWallet,
                                 description: `Bạn đã nạp thành công ${numericAmount} vào tài khoản`
                             };
-                            await axios.post('http://firstrealestate-001-site1.anytempurl.com/api/WalletHistory/CreateWalletHistory', walletHistoryData);
+                            await axios.post('http://swprealestatev2-001-site1.etempurl.com/api/WalletHistory/CreateWalletHistory', walletHistoryData);
                             console.log("Wallet history created successfully!");
                         } catch (error) {
                             console.error("Error updating wallet or creating wallet history:", error);
@@ -112,7 +112,7 @@ export default function CustomerNaptienkhachhang() {
                             accountBalance: numericAmount
                         };
                         try {
-                            await axios.post('http://firstrealestate-001-site1.anytempurl.com/api/Wallet/CreateWallet', dataToSend);
+                            await axios.post('http://swprealestatev2-001-site1.etempurl.com/api/Wallet/CreateWallet', dataToSend);
                             console.log("New wallet created successfully!");
                             
                             // Gửi dữ liệu đến API WalletHistory
@@ -120,7 +120,7 @@ export default function CustomerNaptienkhachhang() {
                                 walletId: walletData.id,
                                 description: `Bạn đã nạp thành công ${numericAmount} vào tài khoản`
                             };
-                            await axios.post('http://firstrealestate-001-site1.anytempurl.com/api/WalletHistory/CreateWalletHistory', walletHistoryData);
+                            await axios.post('http://swprealestatev2-001-site1.etempurl.com/api/WalletHistory/CreateWalletHistory', walletHistoryData);
                             console.log("Wallet history created successfully!");
                         } catch (error) {
                             console.error("Error creating new wallet or creating wallet history:", error);

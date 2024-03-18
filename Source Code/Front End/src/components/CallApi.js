@@ -4,7 +4,7 @@ import axios from 'axios';
 class CallApi {
     static async getAllReservations() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/reservation/GetAllReservation');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/admin/GetAllReservation');
             return response.data;
         } catch (error) {
             console.error('Error fetching reservation data:', error);
@@ -14,7 +14,7 @@ class CallApi {
 
     static async getAllRealEstate() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/invester/getAllRealEstate');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/invester/getAllRealEstate');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);
@@ -24,7 +24,7 @@ class CallApi {
 
     static async getAllAccount() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/admin/getAllAccount');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/admin/getAllAccount');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);
@@ -33,7 +33,7 @@ class CallApi {
     }
     static async getAllDirect() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/direct/getAllDirect');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/direct/getAllDirect');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);
@@ -51,7 +51,7 @@ class CallApi {
     }
     static async getAllReservationAdmin() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/admin/GetAllReservation');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/admin/GetAllReservation');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);
@@ -60,7 +60,7 @@ class CallApi {
     }
     static async getAllRole() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/role/getAllRole');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/role/getAllRole');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);
@@ -69,7 +69,7 @@ class CallApi {
     }
     static async getAllWallet() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/Wallet/GetAllWallet');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/Wallet/GetAllWallet');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);
@@ -78,7 +78,7 @@ class CallApi {
     }
     static async getAllWalletHistorylWallet() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/WalletHistory/GetAllWalletHistory');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/WalletHistory/GetAllWalletHistory');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);
@@ -87,7 +87,7 @@ class CallApi {
     }
     static async getAllLocation() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/location/getAllLocation');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/location/getAllLocation');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);
@@ -96,7 +96,7 @@ class CallApi {
     }
     static async GetAllReservationTime() {
         try {
-            const response = await axios.get('http://firstrealestate-001-site1.anytempurl.com/api/ReservationTime/GetAllReservationTime');
+            const response = await axios.get('http://swprealestatev2-001-site1.etempurl.com/api/ReservationTime/GetAllReservationTime');
             return response.data;
         } catch (error) {
             console.error('Error fetching real estate data:', error);

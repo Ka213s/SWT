@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Thêm useNavigate từ react-router-dom
+import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import AgencyMenu from './agency-menu';
 import UserAgency from '../../list/userAgency';
 import CallApi from '../CallApi';
@@ -14,13 +16,14 @@ export default function AgencyDatcocmuaban() {
     const [realEstates, setRealEstates] = useState([]);
     const [accounts, setAccounts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const navigate = useNavigate(); // Sử dụng useNavigate để chuyển trang
+    const [selectedDate, setSelectedDate] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const getAllReservations = await CallApi.getAllReservations();
-                const filteredReservations = getAllReservations.filter(reservation => reservation.status === 1);
+                const filteredReservations = getAllReservations.filter(reservation => reservation.status === 1 || reservation.status === 2);
                 const getAgenId = filteredReservations.filter(AgenId => AgenId.agencyId === getAgencyId);
                 setBookReservations(getAgenId);
                 const callDataRealEstateData = await CallApi.getAllRealEstate();
@@ -38,6 +41,10 @@ export default function AgencyDatcocmuaban() {
         setSearchTerm(event.target.value);
     };
 
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
+
     const getRealEstateNameById = (realEstateId) => {
         const realEstate = realEstates.find(item => item.id === realEstateId);
         return realEstate ? realEstate.realestateName : 'Unknown';
@@ -47,6 +54,29 @@ export default function AgencyDatcocmuaban() {
         const account = accounts.find(item => item.id === customerId);
         return account ? account.username : 'Unknown';
     };
+    const getRealEstateStatusById = (realEstateId) => {
+        const realEstate = realEstates.find(item => item.id === realEstateId);
+        if (realEstate) {
+            switch (realEstate.status) {
+                case 2:
+                    return 'Đang xử lý';
+                case 3:
+                    return 'Đang chờ phê duyệt cọc';
+                case 4:
+                    return 'Phê duyệt cọc thành công';
+                case 5:
+                    return 'Đang chờ phê duyệt bán';
+                case 6:
+                    return 'Đang chờ bán thành công';
+                default:
+                    return 'Trạng thái không xác định';
+            }
+        } else {
+            return 'Không tìm thấy thông tin bất động sản';
+        }
+    };
+    
+    
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -56,37 +86,22 @@ export default function AgencyDatcocmuaban() {
         return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
     };
 
-    const handleCompleteClick = async () => {
-        if (window.confirm("Bạn có chắc chắn muốn đánh dấu tất cả các đơn đặt chỗ này là đã hoàn thành không?")) {
-            try {
-                await Promise.all(bookReservations.map(async reservation => {
-                    await axios.put(`http://firstrealestate-001-site1.anytempurl.com/api/reservation/UpdateReservation/${reservation.id}`, {
-                        realEstateId: reservation.realEstateId,
-                        customerId: reservation.customerId,
-                        status: 2,
-                        bookingDate: reservation.bookingDate,
-                        bookingTime: reservation.bookingTime,
-                        agencyId: reservation.agencyId
-                    });
-                }));
-
-                toast.success('Cập nhật thành công!', {
-                    onClose: () => window.location.reload()
-                });
-            } catch (error) {
-                console.error('Error updating reservations', error);
-                toast.error('Cập nhật thất bại!', {
-                    onClose: () => window.location.reload()
-                });
-            }
-        }
-    };
-
     const handleCustomerNameClick = (customerId, realEstateId) => {
-        navigate(`/customer/${customerId}/realestate/${realEstateId}`); // Sử dụng navigate để chuyển trang
+        navigate(`/customer/${customerId}/realestate/${realEstateId}`);
     };
 
-    const filteredReservations = bookReservations.filter(reservation =>
+    // Filter reservations by the selected date
+    const dateFilteredReservations = selectedDate ? bookReservations.filter(reservation => {
+        const reservationDate = new Date(reservation.bookingDate);
+        return (
+            reservationDate.getDate() === selectedDate.getDate() &&
+            reservationDate.getMonth() === selectedDate.getMonth() &&
+            reservationDate.getFullYear() === selectedDate.getFullYear()
+        );
+    }) : bookReservations;
+
+    // Further filter by search term if necessary
+    const filteredReservations = dateFilteredReservations.filter(reservation =>
         getRealEstateNameById(reservation.realEstateId).toLowerCase().includes(searchTerm.toLowerCase()) ||
         getUsernameByCustomerId(reservation.customerId).toLowerCase().includes(searchTerm.toLowerCase()) ||
         formatDate(reservation.bookingDate).includes(searchTerm.toLowerCase()) ||
@@ -94,8 +109,8 @@ export default function AgencyDatcocmuaban() {
     );
 
     return (
-        <div className='outer-container'>
-            <div className='container'>
+        <div className='outer-container1'>
+            <div className='container12'>
                 <AgencyMenu
                     userLoginBasicInformationDto={userLoginBasicInformationDto}
                     UserMenu={UserAgency}
@@ -107,6 +122,12 @@ export default function AgencyDatcocmuaban() {
                         value={searchTerm}
                         onChange={handleSearchChange}
                     />
+                    <DatePicker
+                        selected={selectedDate}
+                        onChange={handleDateChange}
+                        placeholderText="Chọn ngày xem"
+                        dateFormat="dd/MM/yyyy"
+                    />
                     <ToastContainer position="top-right" autoClose={1000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
                     {filteredReservations.length > 0 ? (
                         <table>
@@ -117,25 +138,28 @@ export default function AgencyDatcocmuaban() {
                                     <th>Ngày xem</th>
                                     <th>Giờ xem</th>
                                     <th>Người dẫn xem</th>
+                                    <th>Trạng thái</th> {/* Thêm cột trạng thái */}
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredReservations.map((reservation, index) => (
                                     <tr key={index}>
                                         <td>{getRealEstateNameById(reservation.realEstateId)}</td>
-                                        {/* Sử dụng sự kiện onClick trực tiếp */}
                                         <td onClick={() => handleCustomerNameClick(reservation.customerId, reservation.realEstateId)}>{getUsernameByCustomerId(reservation.customerId)}</td>
                                         <td>{formatDate(reservation.bookingDate)}</td>
                                         <td>{reservation.bookingTime}</td>
                                         <td>{reservation.agencyId !== null ? getUsernameByCustomerId(reservation.agencyId) : 'Đang cập nhật'}</td>
+                                        <td>{getRealEstateStatusById(reservation.realEstateId)}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     ) : (
-                        <p style={{ marginTop: '10px', marginLeft: '3px' }}>Không có đơn đặt chỗ nào.</p>
+                        <p style={{ marginTop: '10px', marginLeft: '3px' }}>
+                            {selectedDate ? 'Không có đơn đặt chỗ nào cho ngày được chọn.' : 'Vui lòng chọn ngày để xem đơn đặt chỗ.'}
+                        </p>
                     )}
-                   
+
                 </div>
             </div>
         </div>
